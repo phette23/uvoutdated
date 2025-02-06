@@ -1,0 +1,17 @@
+[project]
+name = "uvoutdated"
+version = "1.0.0"
+description = "list outdated direct dependencies"
+readme = "README.md"
+# click 8 is python 3.7+
+requires-python = ">=3.7"
+dependencies = [
+    "click==8.1.7",
+    "toml==0.10.2",
+]
+
+[project.scripts]
+uvoutdated = "uvoutdated:main"
+
+[tool.uv]
+package = true
