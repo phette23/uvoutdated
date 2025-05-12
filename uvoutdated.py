@@ -5,6 +5,7 @@ from subprocess import check_output
 from typing import Any
 
 import click
+from packaging.requirements import Requirement
 import toml
 
 
@@ -19,7 +20,7 @@ import toml
 def main(file: Path):
     """Print outdated direct dependencies in pyproject.toml."""
     project: dict[str, Any] = toml.load(file)["project"]
-    deps: list[str] = project["dependencies"]
+    deps: list[str] = [Requirement(dep).name for dep in project["dependencies"]]
     click.echo(outdated(deps), nl=False)
 
 
@@ -33,7 +34,7 @@ def outdated(deps: list[str]) -> str:
         else:
             pkg: str = line.split(" ")[0]
             for dep in deps:
-                if re.match(r"^" + pkg, dep):
+                if re.match(r"^" + pkg + "$", dep):
                     output += f"{line}\n"
                     break
     return output
